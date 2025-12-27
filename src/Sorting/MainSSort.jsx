@@ -9,19 +9,17 @@ const MainSSort = () => {
 
     const [selectedSize, setSelectedSize] = useState(100);
 
-    // List pilihan ukuran data
     const sizes = [50, 100, 250, 500, 1000, 5000];
 
     useEffect(() => {
         handleGenerateData(100);
     }, []);
 
-    // Fungsi handle ganti ukuran / reset
     const handleGenerateData = (size) => {
-        setSelectedSize(size); // Update tombol aktif
-        const data = generateBigData(size); // Generate data baru
+        setSelectedSize(size);
+        const data = generateBigData(size);
         setProducts(data);
-        setLastRun(null); // Reset status terakhir
+        setLastRun(null);
     };
 
 
@@ -35,31 +33,28 @@ const MainSSort = () => {
             sortedData = iterativeSSort(dataCopy);
             console.timeEnd("iterativeSSort");
         } else {
-            // Recursive Selection Sort
+            
             console.time("recursiveSSort");
             sortedData = recursiveSSort(dataCopy);
             console.timeEnd("recursiveSSort");
         }
 
         const end = performance.now();
-        const duration = (end - start).toFixed(2); // 2 desimal
+        const duration = (end - start).toFixed(2);
 
         setProducts(sortedData);
 
-        // Simpan log hasil
         const newLog = {
             id: Date.now(),
             type: type === 'iterative' ? 'Iterative Selection' : 'Recursive Selection',
             count: products.length,
             time: duration,
-            winner: false // Nanti bisa dilogika siapa yang menang
         };
 
         setLogs([newLog, ...logs]);
         setLastRun({ type, time: duration });
     };
 
-    // Formatter Rupiah
     const formatRupiah = (number) => {
         return new Intl.NumberFormat('id-ID', {
             style: 'currency',
@@ -71,16 +66,12 @@ const MainSSort = () => {
     return (
         <div className="min-h-screen bg-slate-50 p-6 font-sans text-slate-800">
             <div className="max-w-7xl mx-auto space-y-6">
-
-                {/* --- HEADER SECTION --- */}
                 <div className="bg-white p-6 rounded-2xl shadow-sm border border-slate-200">
                     <div className="flex flex-col md:flex-row justify-between items-start md:items-center mb-6">
                         <div>
                             <h1 className="text-2xl font-bold text-slate-900">AlgoBenchmark E-Commerce</h1>
                             <p className="text-slate-500 text-sm">Analisis Kompleksitas: Selection Sort ($O(n^2)$)</p>
                         </div>
-
-                        {/* Tombol Run */}
                         <div className="flex gap-3 mt-4 md:mt-0">
                             <button
                                 onClick={() => runSort('iterative')}
@@ -97,7 +88,6 @@ const MainSSort = () => {
                         </div>
                     </div>
 
-                    {/* --- SIZE SELECTOR (BAGIAN BARU) --- */}
                     <div className="border-t border-slate-100 pt-4">
                         <p className="text-xs font-semibold text-slate-400 uppercase tracking-wider mb-2">
                             Pilih Jumlah Data (N):
@@ -123,7 +113,6 @@ const MainSSort = () => {
 
                 <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
 
-                    {/* --- LEFT: STATS & LOGS --- */}
                     <div className="space-y-6">
                         <div className="bg-white p-6 rounded-2xl shadow-sm border border-slate-200">
                             <h3 className="text-sm font-semibold text-slate-400 uppercase tracking-wider mb-4">Waktu Eksekusi</h3>
@@ -176,7 +165,6 @@ const MainSSort = () => {
                         </div>
                     </div>
 
-                    {/* --- RIGHT: PRODUCT GRID --- */}
                     <div className="lg:col-span-2 bg-white p-6 rounded-2xl shadow-sm border border-slate-200">
                         <div className="flex justify-between items-center mb-6">
                             <h2 className="font-bold text-lg text-slate-800">Preview Data</h2>
